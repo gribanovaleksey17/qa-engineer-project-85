@@ -1,0 +1,17 @@
+---
+name: Алексей
+job: QA Engineer
+level: junior
+email: alexey@example.com
+description: |
+  Я QA Engineer, занимаюсь тестированием веб-приложений и API.
+  Интересуюсь автоматизацией тестирования и построением стабильных тестовых процессов.
+
+  Люблю разбирать сложные баги и улучшать качество продукта.
+skills:
+  - Функциональное тестирование
+  - API testing (Postman)
+  - SQL
+  - Python basics
+  - Linux
+  - Git
