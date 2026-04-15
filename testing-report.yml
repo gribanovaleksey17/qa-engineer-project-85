@@ -1,0 +1,585 @@
+---
+- summary: |
+    Регистрация пользователя с валидными данными
+  requirement: |
+    Пользователь должен иметь возможность зарегистрироваться в системе
+  prerequisites: |
+    Открыта главная страница Codebattle
+    Пользователь не авторизован
+  test-data: |
+    Nickname = qa_user_01
+    Email = qa_user_01@mail.com
+    Password = Qwerty123!
+  steps:
+    - Нажать кнопку Sign up
+    - Заполнить поле Nickname значением из test-data
+    - Заполнить поле Email значением из test-data
+    - Заполнить поле Password значением из test-data
+    - Заполнить поле Password Confirmation значением из test-data
+    - Нажать кнопку Submit
+  expected-result: |
+    Пользователь зарегистрирован и авторизован, открывается лобби
+
+- summary: |
+    Регистрация пользователя с уже зарегистрированным email
+  requirement: |
+    Система должна запрещать регистрацию с email, который уже зарегистрирован
+  prerequisites: |
+    В системе уже существует пользователь с email qa_user_01@mail.com
+    Открыта главная страница Codebattle
+    Пользователь не авторизован
+  test-data: |
+    Nickname = qa_user_02
+    Email = qa_user_01@mail.com
+    Password = Qwerty123!
+  steps:
+    - Нажать кнопку Sign up
+    - Заполнить поле Nickname значением из test-data
+    - Заполнить поле Email значением из test-data
+    - Заполнить поле Password значением из test-data
+    - Заполнить поле Password Confirmation значением из test-data
+    - Нажать кнопку Submit
+  expected-result: |
+    Пользователь не зарегистрирован, отображается сообщение об ошибке о занятости email
+
+- summary: |
+    Регистрация пользователя с невалидным email
+  requirement: |
+    Email должен проходить валидацию формата
+  prerequisites: |
+    Открыта главная страница Codebattle
+    Пользователь не авторизован
+  test-data: |
+    Nickname = qa_user_03
+    Email = qa_user_03mail.com
+    Password = Qwerty123!
+  steps:
+    - Нажать кнопку Sign up
+    - Заполнить поле Nickname значением из test-data
+    - Заполнить поле Email значением из test-data
+    - Заполнить поле Password значением из test-data
+    - Заполнить поле Password Confirmation значением из test-data
+    - Нажать кнопку Submit
+  expected-result: |
+    Регистрация не выполнена, отображается ошибка валидации email
+
+- summary: |
+    Регистрация пользователя с пустыми обязательными полями
+  requirement: |
+    Обязательные поля регистрации не должны быть пустыми
+  prerequisites: |
+    Открыта главная страница Codebattle
+    Пользователь не авторизован
+  test-data: |
+    Nickname = ""
+    Email = ""
+    Password = ""
+  steps:
+    - Нажать Sign up
+    - Оставить поля Nickname, Email, Password, Password Confirmation пустыми
+    - Нажать Submit
+  expected-result: |
+    Регистрация не выполнена, отображаются ошибки о необходимости заполнения обязательных полей
+
+- summary: |
+    Вход пользователя с валидными данными
+  requirement: |
+    При корректном вводе логина и пароля пользователь должен войти в систему
+  prerequisites: |
+    Существует зарегистрированный пользователь
+    Открыта страница логина
+  test-data: |
+    Email = qa_user_01@mail.com
+    Password = Qwerty123!
+  steps:
+    - Ввести Email
+    - Ввести Password
+    - Нажать Submit
+  expected-result: |
+    Пользователь успешно авторизован и попадает в лобби
+
+- summary: |
+    Вход пользователя с неверным паролем
+  requirement: |
+    При неправильном логине или пароле пользователь должен получить сообщение об ошибке
+  prerequisites: |
+    Существует зарегистрированный пользователь
+    Открыта страница логина
+  test-data: |
+    Email = qa_user_01@mail.com
+    Password = WrongPass123!
+  steps:
+    - Ввести Email
+    - Ввести неверный Password
+    - Нажать Submit
+  expected-result: |
+    Пользователь не авторизован, отображается сообщение об ошибке
+
+- summary: |
+    Вход пользователя с несуществующим email
+  requirement: |
+    При неправильном логине или пароле пользователь должен получить сообщение об ошибке
+  prerequisites: |
+    Открыта страница логина
+  test-data: |
+    Email = not_exists_01@mail.com
+    Password = Qwerty123!
+  steps:
+    - Ввести Email
+    - Ввести Password
+    - Нажать Submit
+  expected-result: |
+    Пользователь не авторизован, отображается сообщение об ошибке
+
+- summary: |
+    Проверка выхода пользователя из системы
+  requirement: |
+    Пользователь должен иметь возможность выйти из аккаунта
+  prerequisites: |
+    Пользователь авторизован
+    Открыто лобби
+  test-data: |
+    User = qa_user_01
+    Action = Logout
+  steps:
+    - Открыть аватар пользователя
+    - Нажать Sign Out
+  expected-result: |
+    Пользователь разлогинени и попадает главную страницу codebattle
+    
+- summary: |
+    Создание игры против бота
+  requirement: |
+    Пользователь должен иметь возможность создать игру против бота
+  prerequisites: |
+    Пользователь авторизован
+    Открыто лобби
+  test-data: |
+    Opponent = Bot
+    Level = 2
+    Task = Random
+    Tags = Random
+  steps:
+    - Нажать Create a battle
+    - Выбрать Game Type = with a bot
+    - Выбрать Level = 2
+    - Выбрать Time control = 8 min
+    - Выбрать Tags = Random
+    - Выбрать Choose task by name or tags = Random
+    - Нажать Create battle
+  expected-result: |
+    Создана игра против бота, пользователь перенаправлен на страницу матча
+
+- summary: |
+    Создание игры с другом
+  requirement: |
+    Пользователь должен иметь возможность создать игру с другом
+  prerequisites: |
+    Пользователь авторизован
+    Friend = Gutri авторизован
+    Открыто лобби
+  test-data: |
+    Opponent = Friend
+    Choose opponent = Gutri
+    Level = 2
+    Task = Random
+    Tags = Random
+  steps:
+    - Нажать Create a battle
+    - Выбрать Game Type = with a friend
+    - Выбрать Level = 2
+    - Выбрать Time control = 8 min
+    - Выбрать Tags = Random
+    - Выбрать Choose task by name or tags = Random
+    - Нажать Create battle
+  expected-result: |
+    Игра создана, отображается ожидание подключения друга
+
+- summary: |
+    Создание общей игры
+  requirement: |
+    Пользователь должен иметь возможность создать общюуу игру
+  prerequisites: |
+    Пользователь авторизован
+    Открыто лобби
+  test-data: |
+    Opponent = user
+    Choose opponent = Gutri
+    Level = 2
+    Task = Random
+    Tags = Random
+  steps:
+    - Нажать Create a battle
+    - Выбрать Game Type = with ofher user
+    - Выбрать Level = 2
+    - Выбрать Time control = 8 min
+    - Выбрать Tags = Random
+    - Выбрать Choose task by name or tags = Random
+    - Нажать Create battle
+    - Нажать Continue battle
+    - Скопировать ссылку на матч
+  expected-result: |
+    Игра создана, отображается ссылка для подключения
+
+- summary: |
+    Создание игры с конкретной задачей
+  requirement: |
+    Пользователь должен иметь возможность выбрать конкретную задачу при создании игры
+  prerequisites: |
+    Пользователь авторизован
+    Открыто лобби
+  test-data: |
+    Opponent = user
+    Level = 3
+    Task = complex_number_div
+    Tags = math
+  steps:
+    - Нажать Create a battle
+    - Выбрать Game Type = with ofher user
+    - Выбрать Level = 3
+    - Выбрать Time control = 8 min
+    - Выбрать Tags = math
+    - Выбрать Choose task by name or tags = complex_number_div
+    - Нажать Create battle
+  expected-result: |
+    Игра создана с выбранной задачей complex_number_div
+
+- summary: |
+    Создание игры с выбором максимального уровня сложности
+  requirement: |
+    Пользователь должен иметь возможность выбрать уровень сложности игры
+  prerequisites: |
+    Пользователь авторизован
+    Открыто лобби
+  test-data: |
+    Opponent = user
+    Level = 4
+    Task = euler_totient_function
+    Tags = math
+  steps:
+    - Нажать Create a battle
+    - Выбрать Game Type = with ofher user
+    - Выбрать Level = 4
+    - Выбрать Time control = 8 min
+    - Выбрать Tags = math
+    - Выбрать Choose task by name or tags = euler_totient_function
+    - Нажать Create battle
+  expected-result: |
+    Игра создана, уровень сложности соответствует выбранному
+
+- summary: |
+    Создание игры с выбором минимального уровня сложности
+  requirement: |
+    Пользователь должен иметь возможность выбрать уровень сложности игры
+  prerequisites: |
+    Пользователь авторизован
+    Открыто лобби
+  test-data: |
+    Opponent = user
+    Level = 1
+    Task = rect_area
+    Tags = math
+  steps:
+    - Нажать Create a battle
+    - Выбрать Game Type = with ofher user
+    - Выбрать Level = 1
+    - Выбрать Time control = 8 min
+    - Выбрать Tags = math
+    - Выбрать Choose task by name or tags = rect_area
+    - Нажать Create battle
+  expected-result: |
+    Игра создана, уровень сложности соответствует выбранному
+
+- summary: |
+    Проверка отображения условия задачи на русском языке
+  requirement: |
+    Задачи должны быть доступны на русском и английском языках
+  prerequisites: |
+    Пользователь находится в матче
+  test-data: |
+    Task language = RU
+  steps:
+    - Открыть блок условия задачи
+    - Переключить язык условия на RU
+  expected-result: |
+    Условие задачи отображается на русском языке
+
+- summary: |
+    Проверка отображения условия задачи на английском языке
+  requirement: |
+    Задачи должны быть доступны на русском и английском языках
+  prerequisites: |
+    Пользователь находится в матче
+  test-data: |
+    Task language = EN
+  steps:
+    - Открыть блок условия задачи
+    - Переключить язык условия на EN
+  expected-result: |
+    Условие задачи отображается на английском языке
+
+- summary: |
+    Проверка выполнения корректного решения и победы игрока
+  requirement: |
+    Система должна завершать игру и определять победителя при корректном решении
+  prerequisites: |
+    Создана игра против бота (Level = 1, Task = rect_area, Tags = math)
+    Пользователь находится в матче
+  test-data: |
+    const _ = require("lodash");
+    const R = require("rambda");
+    const solution = (width, length) => {
+    return width * length;
+    };
+    module.exports = solution;
+  steps:
+    - Вставить код решения из test-data
+    - Нажать кнопку Run
+  expected-result: |
+    Все тесты пройдены, игра завершается победой пользователя
+
+- summary: |
+    Проверка отображения результата тестов при неверном решении (эквивалентный класс: ошибка логики)
+  requirement: |
+    Пользователь должен видеть результаты тестов при ошибке в решении
+  prerequisites: |
+    Создана игра против бота (Level = 1, Task = rect_area, Tags = math)
+    Пользователь находится в матче
+  test-data: |
+    const _ = require("lodash");
+    const R = require("rambda");
+    const solution = (width, length) => {
+    return width + length;
+    };
+    module.exports = solution;
+  steps:
+    - Вставить код решения из test-data
+    - Нажать кнопку Run
+  expected-result: |
+    Тесты не проходят, отображается ошибка/failed tests
+
+- summary: |
+    Проверка отображения ошибки при синтаксической ошибке в коде (эквивалентный класс: syntax error)
+  requirement: |
+    Пользователь должен получать результат выполнения тестов даже при ошибке компиляции/интерпретации
+  prerequisites: |
+    Создана игра против бота (Level = 1, Task = rect_area, Tags = math)
+    Пользователь находится в матче
+  test-data: |
+    const _ = require("lodash");
+    const R = require("rambda");
+    const solution = (width, length) => {
+    return width * length;
+    
+    module.exports = solution;
+  steps:
+    - Вставить код решения из test-data
+    - Нажать кнопку Run
+  expected-result: |
+    Тесты не проходят, отображается ошибка/failed tests
+
+- summary: |
+    Смена языка программирования во время матча
+  requirement: |
+    Пользователь может менять язык программирования во время решения
+  prerequisites: |
+    Создана игра против бота (Level = 1, Task = rect_area, Tags = math)
+    Пользователь находится в матче
+  test-data: |
+    Language_1 = NodeJS
+    Language_2 = Python
+  steps:
+    - Переключить язык на Python
+  expected-result: |
+    Язык переключается на Python, редактор отображает шаблон/код для Python
+
+- summary: |
+    Проверка real-time отображения кода соперника (две сессии)
+  requirement: |
+    Игроки должны видеть код друг друга в режиме реального времени
+  prerequisites: |
+    Создан матч Player vs Player
+    Открыты две сессии под разными пользователями
+  test-data: |
+    User_1 = qa_user_01
+    User_2 = qa_user_02
+  steps:
+    - В сессии User_1 ввести текст Input_text в редактор
+    - В сессии User_2 наблюдать поле редактора соперника
+  expected-result: |
+    Введенный текст отображается у соперника без перезагрузки страницы
+
+- summary: |
+    Отправка сообщения в чат матч
+  requirement: |
+    Пользователь должен иметь возможность отправлять сообщения в чат игры
+  prerequisites: |
+    Пользователь авторизован
+    Пользователь находится в матче
+  test-data: |
+    Message = Hello from QA!
+  steps:
+    - Ввести сообщение Message в поле чата "Hello from QA!"
+    - Нажать Send
+  expected-result: |
+    Сообщение появляется в чате и отображается другим участникам
+
+- summary: |
+    Отправка пустого сообщения в чат
+  requirement: |
+    Система должна предотвращать отправку пустых сообщений
+  prerequisites: |
+    Пользователь авторизован
+    Пользователь находится в матче
+  test-data: |
+    Message = ""
+  steps:
+    - Оставить поле сообщения пустым
+    - Нажать Send
+  expected-result: |
+    Сообщение не отправлено, чат не изменился
+
+- summary: |
+    Отправка сообщения с HTML/JS в чат
+  requirement: |
+    Чат должен иметь базовую защиту от XSS/HTML-инъекций
+  prerequisites: |
+    Пользователь авторизован
+    Пользователь находится в матче
+  test-data: |
+    Message = <script>alert("xss")</script>
+  steps:
+    - Ввести сообщение Message в чат
+    - Нажать Send
+  expected-result: |
+    Сообщение отображается как текст, скрипт не выполняется
+
+- summary: |
+    Просмотр активной игры
+  requirement: |
+    Пользователь должен иметь возможность наблюдать за ходом игры других пользователей
+  prerequisites: |
+    В системе существует активная публичная игра
+    Пользователь авторизован
+  test-data: |
+    Game type = Public active match
+  steps:
+    - Нажать Join a game
+    - Выбрать любую активную публичную игру
+    - Нажать Show
+  expected-result: |
+    Игра открывается в режиме наблюдателя, отображаются оба редактора и прогресс
+
+- summary: |
+    Проверка отображения рейтинга игроков
+  requirement: |
+    Пользователь может просматривать рейтинг игроков для разных языков программирования
+  prerequisites: |
+    Открыта страница Hall of Fame
+  test-data: |
+    Languages = all, java, python 
+    Clans = all
+  steps:
+    - Открыть раздел рейтинга Hall of Fame Languages = all
+    - Переключить Languages на java
+    - Переключить Languages на python
+  expected-result: |
+    Рейтинг корректно обновляется для каждого языка программирования
+
+- summary: |
+    Проверка сохранения игры при обновлении страницы
+  requirement: |
+    Система должна корректно обрабатывать переподключение игрока во время матча
+  prerequisites: |
+    Пользователь находится в активной игре
+  test-data: |
+    Browser action = Refresh (F5)
+    Code_before_refresh = const a = 1;
+  steps:
+    - Ввести Code_before_refresh в редактор
+    - Обновить страницу браузера
+  expected-result: |
+    Пользователь возвращается в матч, игра активна, соединение восстановлено
+
+- summary: |
+    Проверка сохранения введенного кода после переподключения
+  requirement: |
+    Система должна сохранять введенный пользователем код при переподключении
+  prerequisites: |
+    Пользователь находится в активной игре
+  test-data: |
+    Code_fragment = function test(){ return 1; }
+    Network simulation = Disable/Enable internet
+  steps:
+    - Ввести Code_fragment в редактор
+    - Отключить интернет на 10 секунд
+    - Включить интернет, появляется сообщение "Connection lost, please reload the page"
+    - Обновить страницу браузера
+  expected-result: |
+    Соединение восстанавливается, введенный код не теряется
+
+- summary: |
+    Проверка корректной работы сайта на мобильном разрешении
+  requirement: |
+    Сайт должен быть удобным на мобильном устройстве
+  prerequisites: |
+    Пользователь не авторизован
+  test-data: |
+    Device resolution = 390x844 (iPhone 12Pro)
+    Browser = Chrome DevTools emulation
+  steps:
+    - Открыть главную страницу Codebattle
+    - Включить эмуляцию устройства 390x844 (iPhone 12Pro)
+    - Проверить доступность кнопок Sign in/Sign up
+  expected-result: |
+    Интерфейс адаптирован, элементы не выходят за границы экрана, основные кнопки доступны
+
+- summary: |
+    Проверка совместимости сайта с последней версией Chrome
+  requirement: |
+    Сайт должен быть протестирован на совместимость с последними версиями браузеров
+  prerequisites: |
+    Пользователь не авторизован
+  test-data: |
+    Browser = Google Chrome latest stable
+    OS = Windows 10
+    Opponent = Bot
+    Level = 2
+    Task = Random
+    Tags = Random
+  steps:
+    - Открыть главную страницу
+    - Нажать Create a battle
+    - Выбрать Game Type = with a bot
+    - Выбрать Level = 2
+    - Выбрать Time control = 8 min
+    - Выбрать Tags = Random
+    - Выбрать Choose task by name or tags = Random
+    - Нажать Create battle
+  expected-result: |
+    Функциональность работает без ошибок отображения и JS ошибок
+
+- summary: |
+    Проверка совместимости сайта с последней версией Firefox
+  requirement: |
+    Сайт должен быть протестирован на совместимость с последними версиями браузеров
+  prerequisites: |
+    Пользователь не авторизован
+  test-data: |
+    Browser = Mozilla Firefox latest stable
+    OS = Windows 10
+    Opponent = Bot
+    Level = 2
+    Task = Random
+    Tags = Random
+  steps:
+    - Открыть главную страницу
+    - Нажать Create a battle
+    - Выбрать Game Type = with a bot
+    - Выбрать Level = 2
+    - Выбрать Time control = 8 min
+    - Выбрать Tags = Random
+    - Выбрать Choose task by name or tags = Random
+    - Нажать Create battle
+  expected-result: |
+    Сайт работает корректно, критичных багов нет
