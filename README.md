@@ -1,7 +1,7 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/gribanovaleksey17/qa-engineer-project-85/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/gribanovaleksey17/qa-engineer-project-85/actions)
 
-О проекте
+О проекте.
 
 Codebattle - open-source проект Хекслета и комьюнити.  
 Это соревновательная игра, где два программиста одновременно решают одну задачу на разных языках программирования.  
@@ -20,7 +20,7 @@ Codebattle - open-source проект Хекслета и комьюнити.
 - Система рейтинга (неделя / месяц / всё время)
 - Поддержка задач на русском и английском языках
 
-Цель репозитория
+Цель репозитория.
 
 Репозиторий создан для практики "тестирования в продакшене" на реальном проекте с активной разработкой и вкладом большого количества участников.
 
