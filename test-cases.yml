@@ -196,6 +196,25 @@
     Игра создана, отображается ожидание подключения друга
 
 - summary: |
+    Присоединение друга к игре по ссылке (with a friend)
+  requirement: |
+    Пользователь должен иметь возможность играть с другом по ссылке
+  prerequisites: |
+    Пользователь qa_user_01 создал игру Game Type = with a friend
+    Ссылка на игру скопирована
+    Пользователь Gutri авторизован
+  test-data: |
+    User_1 = qa_user_01
+    User_2 = Gutri
+    Game type = with a friend
+    Invite link = <copied link>
+  steps:
+    - Открыть Invite link под пользователем Gutri
+    - Нажать кнопку Join a battle
+  expected-result: |
+    Пользователь Gutri успешно подключается к игре, матч стартует
+
+- summary: |
     Создание общей игры
   requirement: |
     Пользователь должен иметь возможность создать общую игру
@@ -220,6 +239,26 @@
     - Скопировать ссылку на матч
   expected-result: |
     Игра создана, отображается ссылка для подключения
+
+- summary: |
+    Присоединение другого пользователя к публичной игре (with other user)
+  requirement: |
+    Пользователь должен иметь возможность создать публичную игру и дождаться подключения соперника
+  prerequisites: |
+    Пользователь qa_user_01 создал игру Game Type = with other user
+    Игра отображается в списке доступных матчей
+    Пользователь Gutri авторизован
+  test-data: |
+    User_1 = qa_user_01
+    User_2 = Gutri
+    Game type = with other user
+  steps:
+    - Открыть Lobby под пользователем Gutri
+    - Нажать кнопку Join a battle
+    - Найти созданную игру qa_user_01 в списке
+    - Нажать Fight
+  expected-result: |
+    Пользователь Gutri подключается, матч начинается
 
 - summary: |
     Создание игры с конкретной задачей
@@ -555,3 +594,43 @@
     - Нажать Create battle
   expected-result: |
     Сайт работает корректно, критичных багов нет
+
+- summary: |
+    Завершение игры через сдачу (Give up)
+  requirement: |
+    Пользователь должен иметь возможность завершить игру через сдачу
+  prerequisites: |
+    Создана активная игра против бота
+    Пользователь находится в матче
+  test-data: |
+    Opponent = Bot
+    Level = 2
+    Time control = 8 min
+    Task = Random
+    Tags = Random
+  steps:
+    - Нажать кнопку настройки "..."
+    - Нажать кнопку Give up
+    - Подтвердить действие на всплывающем окне "Are you sure you want to give up?" нажатием Give up
+  expected-result: |
+    Игра завершается, пользователю отображается результат поражения (всплывающее окно "If you read this you've lost the game")
+
+- summary: |
+    Завершение игры по истечению времени таймера
+  requirement: |
+    Игра должна завершаться по истечению времени матча
+  prerequisites: |
+    Создана активная игра против бота
+    Пользователь находится в матче
+  test-data: |
+    Opponent = Bot
+    Level = 2
+    Time control = 1 min 
+    Task = Random
+    Tags = Random
+  steps:
+    - Запустить матч
+    - Не отправлять решение
+    - Дождаться окончания таймера (1 min)
+  expected-result: |
+    Игра автоматически завершается по таймеру
