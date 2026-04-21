@@ -40,7 +40,15 @@
   status: pass
 
 - summary: |
+    Присоединение друга к игре по ссылке (with a friend)
+  status: pass
+
+- summary: |
     Создание общей игры
+  status: pass
+
+- summary: |
+    Присоединение другого пользователя к публичной игре (with other user)
   status: pass
 
 - summary: |
@@ -113,4 +121,12 @@
 
 - summary: |
     Проверка совместимости сайта с последней версией Firefox
+  status: pass
+
+- summary: |
+    Завершение игры через сдачу (Give up)
+  status: pass
+
+- summary: |
+    Завершение игры по истечению времени таймера
   status: pass
